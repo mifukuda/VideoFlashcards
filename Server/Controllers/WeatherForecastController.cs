@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Server.Data;
 
 namespace Server.Controllers;
 
@@ -6,16 +7,21 @@ namespace Server.Controllers;
 [Route("[controller]")]
 public class WeatherForecastController : ControllerBase
 {
+    private readonly DataContextDapper _dapper;
     private static readonly string[] Summaries = new[]
     {
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
     };
 
-    private readonly ILogger<WeatherForecastController> _logger;
-
-    public WeatherForecastController(ILogger<WeatherForecastController> logger)
+    public WeatherForecastController(IConfiguration config)
     {
-        _logger = logger;
+        _dapper = new DataContextDapper(config);
+    }
+
+    [HttpGet("TestConnection")]
+    public DateTime TestConnection()
+    {
+        return _dapper.LoadDataSingle<DateTime>("Select GETDATE()");
     }
 
     [HttpGet(Name = "GetWeatherForecast")]
