@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import {loginUser} from '../api';
+import { Link } from "react-router-dom";
 
 export default function LoginBar(props) {
     const [email, setEmail] = useState("");
@@ -29,13 +30,10 @@ export default function LoginBar(props) {
         setPassword(event.target.value);
     }
 
-    const widthStyle = {
-        width: '40%'
-    }
-
     return (
         <div className="login-bar">
-            <Form style={widthStyle}>
+            <img src={require('../images/logo.png')} alt="logo.png" className="login-bar-logo"/>
+            <Form style={{ width: '40%'}}>
                 <Form.Group className="mb-3" controlId="formPlaintextEmail">
                     <Form.Control type="email" placeholder="name@example.com" onChange={(event) => handleEmailChange(event)}/>
                 </Form.Group>
@@ -43,7 +41,8 @@ export default function LoginBar(props) {
                     <Form.Control type="password" placeholder="Password" onChange={(event) => handlePasswordChange(event)}/>
                 </Form.Group>
             </Form>
-            <Button variant="outline-light" style={widthStyle} onClick={() => handleClick()}>Login</Button>{' '}
+            <Button variant="outline-light" style={{ width: "40%", marginBottom: "2%"}} onClick={() => handleClick()}>Login</Button>{' '}
+            <Link to="/register">Create Account</Link>
         </div>
     )
 }
