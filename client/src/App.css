@@ -97,3 +97,35 @@
     right: 50%;
   }
 }
+
+.registration-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+  background-image: linear-gradient(rgb(12, 22, 64), rgb(33, 47, 68));
+}
+
+.registration-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 35%;
+  min-height: 85vh;
+  background-image: url('./images/paper_background.jpg');
+  border-radius: 3%;
+}
+
+.registration-screen-logo {
+  width: 62.5%;
+  margin-bottom: 4%;
+}
+
+.registration-fields {
+  display: inline-block;
+  width: 55%;
+  margin-bottom: 2%;
+}
+

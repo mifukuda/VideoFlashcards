@@ -59,6 +59,16 @@ else
     app.UseCors("ProdCors");
 }
 
+// Set Authorization Header with JWT token value
+app.Use(async (context, next) => {
+    if(context.Request.Cookies.ContainsKey("token"))
+    {
+        Console.WriteLine(context.Request.Cookies["token"]);
+        context.Request.Headers.Add("Authorization", "Bearer " + context.Request.Cookies["token"]);
+    }
+    await next.Invoke(context);
+});
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();

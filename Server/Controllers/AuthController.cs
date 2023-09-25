@@ -61,7 +61,12 @@ public class AuthController : ControllerBase
                     // Create row in user table
                     if(_reusableSql.UpsertUser(user))
                     {
-                        return Ok();
+                        // Return JWT token
+                        string sqlUserId = "SELECT UserId FROM VideoFlashcardsSchema.Users WHERE Email = '" + userForRegistration.Email + "'";
+                        int userId = _dapper.LoadDataSingle<int>(sqlUserId);
+                        return Ok(new Dictionary<string, string>{
+                            {"token", _authHelper.CreateToken(userId)}
+                        });
                     }
                     return StatusCode(400, "Failed to create user");
                 }
@@ -95,11 +100,16 @@ public class AuthController : ControllerBase
             }
         }
 
-        String sqlUserId = "SELECT UserId FROM VideoFlashcardsSchema.Users WHERE Email = '" + userForLogin.Email + "'";
+        string sqlUserId = "SELECT UserId FROM VideoFlashcardsSchema.Users WHERE Email = '" + userForLogin.Email + "'";
         int userId = _dapper.LoadDataSingle<int>(sqlUserId);
-        return Ok(new Dictionary<string, string>{
-            {"token", _authHelper.CreateToken(userId)}
-        });
+
+        // Set cookie "token"=JWT
+        Response.Cookies.Append("token", _authHelper.CreateToken(userId), new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
+        return Ok();
+
+        // return Ok(new Dictionary<string, string>{
+        //     {"token", _authHelper.CreateToken(userId)}
+        // });
     }
 
     [HttpGet("RefreshToken")]

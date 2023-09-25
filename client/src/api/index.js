@@ -7,9 +7,11 @@ const api = axios.create({
 
 // export const loginUser = (payload, token) => api.post('Auth/Login', payload, {headers: {'Authorization': 'Bearer ' + token}});
 export const loginUser = (payload) => api.post('Auth/Login', payload);
+export const registerUser = (payload) => api.post('Auth/Register', payload);
 
 const apis = {
-    loginUser
+    loginUser,
+    registerUser
 }
 
 export default apis;
