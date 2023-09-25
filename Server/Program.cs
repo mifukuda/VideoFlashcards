@@ -14,14 +14,14 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors((options) =>
     {
-        options.AddPolicy("Devcors", (corsBuilder) =>
+        options.AddPolicy("DevCors", (corsBuilder) =>
             {
                 corsBuilder.WithOrigins("http://localhost:3000")
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials();
             });
-        options.AddPolicy("Prodcors", (corsBuilder) =>
+        options.AddPolicy("ProdCors", (corsBuilder) =>
             {
                 corsBuilder.WithOrigins("https://myProductionSite.com")
                     .AllowAnyMethod()
