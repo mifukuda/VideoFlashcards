@@ -71,4 +71,43 @@ public class AuthController : ControllerBase
         }
         return StatusCode(400, "Passwords do not match");
     }
+
+    [AllowAnonymous]
+    [HttpPost("Login")]
+    public IActionResult Login(UserForLoginDto userForLogin)
+    {
+        // Execute spLoginConfirmation_Get stored procedure defined in CreateDatabase.SQL
+        string sqlForHashAndSalt = @"EXEC VideoFlashcardsSchema.spLoginConfirmation_Get
+            @Email = @EmailParam";
+        DynamicParameters sqlParameters = new DynamicParameters();
+        sqlParameters.Add("@EmailParam", userForLogin.Email, DbType.String);
+
+        // Get PasswordHash and PasswordSalt
+        UserForLoginConfirmationDto userForConfirmation = _dapper.LoadDataSingleWithParameters<UserForLoginConfirmationDto>(sqlForHashAndSalt, sqlParameters);
+
+        // Iterate through new password hash and password hash retrieved from database
+        byte[] passwordHash = _authHelper.GetPasswordHash(userForLogin.Password, userForConfirmation.PasswordSalt);
+        for(int index = 0; index < passwordHash.Length; index++)
+        {
+            if (passwordHash[index] != userForConfirmation.PasswordHash[index])
+            {
+                return StatusCode(401, "Incorrect password!");
+            }
+        }
+
+        String sqlUserId = "SELECT UserId FROM VideoFlashcardsSchema.Users WHERE Email = '" + userForLogin.Email + "'";
+        int userId = _dapper.LoadDataSingle<int>(sqlUserId);
+        return Ok(new Dictionary<string, string>{
+            {"token", _authHelper.CreateToken(userId)}
+        });
+    }
+
+    [HttpGet("RefreshToken")]
+    public string RefreshToken()
+    {
+        // Make sure UserId exists
+        string sqlUserId = "Select UserId FROM VideoFlashcardsSchema.Users WHERE UserId = '" + User.FindFirst("userId")?.Value + "'";
+        int userId = _dapper.LoadDataSingle<int>(sqlUserId);
+        return _authHelper.CreateToken(userId);
+    }
 }

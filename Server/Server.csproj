@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="dapper" Version="2.0.151" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JWTBearer" Version="7.0.11" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.11" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
