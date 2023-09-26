@@ -4,9 +4,9 @@ import Form from 'react-bootstrap/Form';
 import {loginUser} from '../api';
 import { Link, useNavigate } from "react-router-dom";
 
-export default function LoginBar(props) {
+export default function LoginBar() {
     const navigate = useNavigate();
-    
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -17,7 +17,6 @@ export default function LoginBar(props) {
         }).then((response) => {
             if(response.status === 200) {
                 console.log(response.data);
-                props.setToken(response.data.token);
                 navigate('/home/');
             }
         }).catch((error) => {

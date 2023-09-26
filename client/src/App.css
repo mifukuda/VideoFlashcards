@@ -37,6 +37,16 @@
   }
 } */
 
+@font-face {
+  font-family: 'KG Second Chances Sketch';
+  src: url("./fonts/KgSecondChancesSketch-KpAp.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: 'KG Second Chances Solid';
+  src: url("./fonts/KgSecondChancesSolid-2B6K.ttf") format("truetype");
+}
+
 .welcome-screen {
   display: flex;
   width: 100%;
@@ -60,18 +70,36 @@
 .landing-bar {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   width: 60%;
   background-image: url('./images/paper_background.jpg');
   margin: 4px;
   border: 4px dashed rgb(33, 47, 68);
 }
 
+.landing-bar-title {
+  text-align: center;
+  font-family: 'KG Second Chances Solid';
+  margin-bottom: 2%;
+}
+
 .landing-bar-info {
-  height: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 85%;
+}
+
+.landing-bar-card {
+  display: flex;
+  width: 67.5%;
+  background-color: white;
 }
 
 .landing-bar-animation {
-  height: 20%;
+  height: 15%;
 }
 
 .landing-bar-gif {
@@ -127,5 +155,27 @@
   display: inline-block;
   width: 55%;
   margin-bottom: 2%;
+}
+
+.flashcard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2.5px solid rgb(33, 47, 68);
+  border-radius: 5px;
+  padding: 2%;
+}
+
+.flashcard-video {
+  margin-bottom: 2%;
+}
+
+.flashcard-header {
+  font-family: 'KG Second Chances Sketch';
+}
+
+.flashcard-description {
+  text-align: center;
 }
 
