@@ -8,7 +8,8 @@ export default function LandingBar() {
                 <h1 className="landing-bar-title">Here's a website for creating video flashcards just like this one:</h1>
                 <div className="landing-bar-card">
                     <Flashcard url="https://i.imgur.com/LOFimKX.mp4" title="Falco's Fullhop in the Corner" 
-                        description="Watch for Falco's escape option in the corner, especially fullhop. Cover with knee or upair to set up for an early kill."/>
+                        description="Watch for Falco's escape option in the corner, especially fullhop. 
+                            Cover with knee or upair to set up for an early kill. That's my cat under this."/>
                 </div>
             </div>
             <div className="landing-bar-animation">

@@ -63,7 +63,7 @@
 }
 
 .login-bar-logo {
-  width: 60%;
+  width: 75%;
   margin-bottom: 5%;
 }
 
@@ -179,3 +179,9 @@
   text-align: center;
 }
 
+.home-screen {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  background-image: url('./images/paper_background.jpg');
+}

@@ -66,12 +66,12 @@ public class UsersController : ControllerBase
         string sql = @"EXEC VideoFlashcardsSchema.spUsers_Delete
             @UserId = @UserIdParameter";
             
-            DynamicParameters sqlParameters = new DynamicParameters();
-            sqlParameters.Add("@UserIdParameter", userId, DbType.Int32);
-            if(_dapper.ExecuteSqlWithParameters(sql, sqlParameters))
-            {
-                return Ok();
-            }
-            return StatusCode(400, "Could not delete specified user");
+        DynamicParameters sqlParameters = new DynamicParameters();
+        sqlParameters.Add("@UserIdParameter", userId, DbType.Int32);
+        if(_dapper.ExecuteSqlWithParameters(sql, sqlParameters))
+        {
+            return Ok();
+        }
+        return StatusCode(400, "Could not delete specified user");
     }
 }
