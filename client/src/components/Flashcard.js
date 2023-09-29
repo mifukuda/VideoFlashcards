@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default function Flashcard(props) {
-
+    
     return (
         <div className="flashcard">
             <div className="flashcard-header">

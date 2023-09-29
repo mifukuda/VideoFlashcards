@@ -1,9 +1,7 @@
 using System.Data;
 using Dapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
 using Server.Data;
-using Server.Helpers;
 using Server.Models;
 
 namespace Server.Controllers;
@@ -70,16 +68,17 @@ public class FlashcardsController : ControllerBase
         return StatusCode(400, "Flashcard could not be created or updated.");
     }
 
-    // Delete user given userId
+    // Delete flashcard given flashcardId
     [HttpDelete("{flashcardId}")]
     public IActionResult DeleteUser(int flashcardId)
     {
-        // Executes spDecks_Delete specified in CreateDatabase.sql
+        // Executes spFlashcards_Delete specified in CreateDatabase.sql
         string sql = @"EXEC VideoFlashcardsSchema.spFlashcards_Delete
             @FlashcardId = @FlashcardIdParameter, @UserId = @UserIdParameter";
             
         DynamicParameters sqlParameters = new DynamicParameters();
         sqlParameters.Add("@FlashcardIdParameter", flashcardId, DbType.Int32);
+        // Obtain userId from JWT; make sure user own Flashcard
         sqlParameters.Add("@UserIdParameter", User.FindFirst("userId")?.Value, DbType.Int32);
         if(_dapper.ExecuteSqlWithParameters(sql, sqlParameters))
         {

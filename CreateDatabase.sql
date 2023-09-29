@@ -48,6 +48,7 @@ BEGIN
 END
 GO
 
+-- EXEC spUsers_Upsert @Email = 'greg@test.com', @FirstName = 'joe', @LastName = 'melee', @UserId = 7
 CREATE OR ALTER PROCEDURE VideoFlashcardsSchema.spUsers_Upsert
     @Email NVARCHAR(50),
     @FirstName NVARCHAR(50),
@@ -55,10 +56,12 @@ CREATE OR ALTER PROCEDURE VideoFlashcardsSchema.spUsers_Upsert
     @UserId INT = NULL
 AS
 BEGIN
+    DECLARE @OutputUserId INT
     IF NOT EXISTS (SELECT * FROM VideoFlashcardsSchema.Users WHERE UserId = @UserId)
         BEGIN
         IF NOT EXISTS (SELECT * FROM VideoFlashcardsSchema.Users WHERE Email = @Email)
             BEGIN
+
                 INSERT INTO VideoFlashcardsSchema.Users(
                     [Users].[Email],
                     [Users].[FirstName],
@@ -68,6 +71,11 @@ BEGIN
                     @FirstName,
                     @LastName
                 )
+
+                SET @OutputUserId = @@IDENTITY
+
+                SELECT * FROM VideoFlashcardsSchema.Users WHERE
+                    UserId = @OutputUserId
             END
         END
     ELSE
@@ -77,6 +85,9 @@ BEGIN
                     FirstName = @FirstName,
                     LastName = @LastName
                 WHERE UserId = @UserId
+
+            SELECT * FROM VideoFlashcardsSchema.Users WHERE
+                UserId = @UserId
                 
         END
 END

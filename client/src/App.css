@@ -79,6 +79,7 @@
 }
 
 .landing-bar-title {
+  width: 80%;
   text-align: center;
   font-family: 'KG Second Chances Solid';
   margin-bottom: 2%;
@@ -89,7 +90,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 85%;
+  height: 90%;
 }
 
 .landing-bar-card {
@@ -99,12 +100,12 @@
 }
 
 .landing-bar-animation {
-  height: 15%;
+  height: 10%;
 }
 
 .landing-bar-gif {
   position: fixed;
-  height: 15%;
+  height: 10%;
   animation: moving-gif 5s linear infinite;
 }
 
@@ -184,4 +185,29 @@
   width: 100%;
   min-height: 100vh;
   background-image: url('./images/paper_background.jpg');
+}
+
+.sidebar {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  transition: 0.5s;
+  background-color: rgb(33, 47, 68);
+  text-align: center;
+}
+
+.sidebar-button {
+  color: white;
+  transition: 0.3s;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 2.4em;
+}
+
+.sidebar-button a:hover {
+  color: gold
 }

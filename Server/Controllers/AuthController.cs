@@ -59,17 +59,15 @@ public class AuthController : ControllerBase
                         LastName = userForRegistration.LastName
                     };
                     // Create row in user table
-                    if(_reusableSql.UpsertUser(user))
-                    {
-                        // Retrieve new UserId
-                        string sqlUserId = "SELECT UserId FROM VideoFlashcardsSchema.Users WHERE Email = '" + userForRegistration.Email + "'";
-                        int userId = _dapper.LoadDataSingle<int>(sqlUserId);
+                    _reusableSql.UpsertUser<User>(user);
+                    
+                    // Retrieve new UserId
+                    string sqlUserId = "SELECT UserId FROM VideoFlashcardsSchema.Users WHERE Email = '" + userForRegistration.Email + "'";
+                    int userId = _dapper.LoadDataSingle<int>(sqlUserId);
 
-                        // Set cookie "token"=JWT
-                        Response.Cookies.Append("token", _authHelper.CreateToken(userId), new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
-                        return Ok();
-                    }
-                    return StatusCode(400, "Failed to create user");
+                    // Set cookie "token"=JWT
+                    Response.Cookies.Append("token", _authHelper.CreateToken(userId), new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
+                    return Ok();
                 }
                 return StatusCode(400, "Failed to register user");
             }

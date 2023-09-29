@@ -1,7 +1,6 @@
 using System.Data;
 using Dapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration.UserSecrets;
 using Server.Data;
 using Server.Helpers;
 using Server.Models;
@@ -21,6 +20,12 @@ public class UsersController : ControllerBase
     {
         _dapper = new DataContextDapper(config);
         _reusableSql = new ReusableSql(config);
+    }
+
+    [HttpGet("Test")]
+    public IActionResult Test()
+    {
+        return Ok();
     }
 
     [HttpGet("TestConnection")]
@@ -48,14 +53,9 @@ public class UsersController : ControllerBase
 
     // Insert or update user (update if UserId does not exist)
     [HttpPut]
-    public IActionResult UpsertUser(User user)
+    public User UpsertUser(User user)
     {
-        // Executes spUsers_Upsert stored procedure
-        if(_reusableSql.UpsertUser(user))
-        {
-            return Ok();
-        }
-        return StatusCode(400, "User could not be created or updated.");
+        return _reusableSql.UpsertUser<User>(user);
     }
 
     // Delete user given userId

@@ -20,33 +20,6 @@ public class DecksController : ControllerBase
         _dapper = new DataContextDapper(config);
     }
 
-    // Get user(s)
-    // [HttpGet("{deckId}/{userId}")]
-    // public IEnumerable<Deck> GetDecks(int deckId = 0, int userId = 0)
-    // {
-    //     // Stored procedure defined in CreateDatabase.sql
-    //     string sql = "EXEC VideoFlashcardsSchema.spDecks_Get";
-    //     string stringParameters = "";
-    //     DynamicParameters sqlParameters = new DynamicParameters();
-    //     // If userId == 0, and deckId == 0, return all decks
-    //     if(userId != 0)
-    //     {
-    //         stringParameters += ", @UserId = @UserIdParameter";
-    //         sqlParameters.Add("@UserIdParameter", userId, DbType.Int32);
-    //     }
-    //     if(deckId != 0)
-    //     {
-    //         stringParameters += ", @DeckId = @DeckIdParameter";
-    //         sqlParameters.Add("@DeckIdParameter", deckId, DbType.Int32);
-    //     }
-    //     if(stringParameters.Length > 0)
-    //     {
-    //         // remove first comma 
-    //         sql += stringParameters.Substring(1);
-    //     }
-    //     return _dapper.LoadDataWithParameters<Deck>(sql, sqlParameters);
-    // }
-
     // Get userId from JWT token and return all user decks
     [HttpGet]
     public IEnumerable<Deck> GetDecks()

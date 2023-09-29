@@ -53,7 +53,7 @@ export default function RegistrationScreen() {
 
     const formStyles = {
         borderColor: "black",
-        borderWidth: "1.5px"
+        borderWidth: "2px"
     }
 
     return(
@@ -75,7 +75,7 @@ export default function RegistrationScreen() {
                             <Form.Control style={formStyles} type="password" placeholder="Password" onChange={(event) => handlePasswordChange(event)}/>
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formPlaintextPasswordConfirm">
-                            <Form.Control style={formStyles} type="password" placeholder="ConfirmPassword" onChange={(event) => handlePasswordConfirmChange(event)}/>
+                            <Form.Control style={formStyles} type="password" placeholder="Confirm Password" onChange={(event) => handlePasswordConfirmChange(event)}/>
                         </Form.Group>
                     </Form>
                 </div>
