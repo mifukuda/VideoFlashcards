@@ -6,7 +6,8 @@
 trigger:
 - master
 
-pool: LAPTOP-JTETNNLQ
+pool: 
+  name: Default
 
 variables:
   solution: '**/*.sln'
