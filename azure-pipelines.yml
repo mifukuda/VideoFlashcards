@@ -51,7 +51,7 @@ stages:
               ConnectionType: 'AzureRM'
               azureSubscription: 'my_azure_subscription'
               appType: 'webApp'
-              WebAppName: 'mfcode'
+              WebAppName: 'mf-videoflashcards-test'
               packageForLinux: '$(Build.ArtifactStagingDirectory)/*.zip'
     
   - stage:
