@@ -32,6 +32,19 @@ stages:
               command: build
               projects: '**/*.csproj'
               arguments: '--configuration $(buildConfiguration)'
+          
+          - task: DotNetCoreCLI@2
+            inputs:
+              command: publish
+              publishWebProjects: True
+              arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+              zipAfterPublish: True
+
+          # this code takes all the files in $(Build.ArtifactStagingDirectory) and uploads them as an artifact of your build.
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: '$(Build.ArtifactStagingDirectory)' 
+              artifactName: 'Server'
     
   - stage:
     displayName: Run Integration Tests
@@ -43,4 +56,5 @@ stages:
             inputs:
               command: test
               projects: '**/*Tests/*.csproj'
-              arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'   
+              arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
+
