@@ -12,23 +12,35 @@ pool:
 variables:
   buildConfiguration: 'Release'
 
-steps:
-  - task: UseDotNet@2
-    displayName: 'Install .NET Core SDK'
-    inputs:
-      version: 7.x
-      performMultiLevelLookup: true
-      includePreviewVersions: true
+stages:
+  - stage:
+    displayName: Build .NET application
+    jobs:
+      - job:
+        displayName: build job
+        steps:
+          - task: UseDotNet@2
+            displayName: 'Install .NET Core SDK'
+            inputs:
+              version: 7.x
+              performMultiLevelLookup: true
+              includePreviewVersions: true
 
-  - task: DotNetCoreCLI@2
-    displayName: Build
-    inputs:
-      command: build
-      projects: '**/*.csproj'
-      arguments: '--configuration $(buildConfiguration)'
-
-  - task: DotNetCoreCLI@2
-    inputs:
-      command: test
-      projects: '**/*Tests/*.csproj'
-      arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'   
+          - task: DotNetCoreCLI@2
+            displayName: Build
+            inputs:
+              command: build
+              projects: '**/*.csproj'
+              arguments: '--configuration $(buildConfiguration)'
+    
+  - stage:
+    displayName: Run Integration Tests
+    jobs:
+      - job:
+        displayName: integration tests job
+        steps:
+          - task: DotNetCoreCLI@2
+            inputs:
+              command: test
+              projects: '**/*Tests/*.csproj'
+              arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'   
