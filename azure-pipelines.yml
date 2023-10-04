@@ -51,7 +51,7 @@ stages:
               ConnectionType: 'AzureRM'
               azureSubscription: 'my_azure_subscription'
               appType: 'webApp'
-              WebAppName: 'test_deployment'
+              WebAppName: 'mfcode'
               packageForLinux: '$(Build.ArtifactStagingDirectory)/*.zip'
     
   - stage:
