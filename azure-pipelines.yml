@@ -52,7 +52,7 @@ stages:
               azureSubscription: 'my_azure_subscription'
               appType: 'webApp'
               WebAppName: 'test_deployment'
-              packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+              packageForLinux: '$(Build.ArtifactStagingDirectory)/*.zip'
     
   - stage:
     displayName: Run Integration Tests
