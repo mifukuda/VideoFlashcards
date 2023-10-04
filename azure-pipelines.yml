@@ -45,6 +45,14 @@ stages:
             inputs:
               targetPath: '$(Build.ArtifactStagingDirectory)' 
               artifactName: 'Server'
+          
+          - task: AzureRmWebAppDeployment@4
+            inputs:
+              ConnectionType: 'AzureRM'
+              azureSubscription: 'my_azure_subscription'
+              appType: 'webApp'
+              WebAppName: 'test_deployment'
+              packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
     
   - stage:
     displayName: Run Integration Tests
