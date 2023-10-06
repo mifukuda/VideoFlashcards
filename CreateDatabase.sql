@@ -97,8 +97,23 @@ CREATE OR ALTER PROCEDURE VideoFlashcardsSchema.spUsers_Delete
     @UserId INT
 AS
 BEGIN
+    DECLARE @Email NVARCHAR(50);
+
+    SELECT @Email = Users.Email
+      FROM VideoFlashcardsSchema.Users
+        WHERE Users.UserId = @UserId;
+
     DELETE FROM VideoFlashcardsSchema.Users
         WHERE UserId = @UserId
+    
+    DELETE FROM VideoFlashcardsSchema.Decks
+        WHERE UserId = @UserId
+    
+    DELETE FROM VideoFlashcardsSchema.Flashcards
+        WHERE UserId = @UserId
+
+    DELETE FROM VideoFlashcardsSchema.Auth
+        WHERE Email = @Email
 END
 GO
 

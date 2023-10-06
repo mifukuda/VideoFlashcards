@@ -53,9 +53,16 @@ public class UsersController : ControllerBase
 
     // Insert or update user (update if UserId does not exist)
     [HttpPut]
-    public User UpsertUser(User user)
+    public ActionResult<User> UpsertUser(User user)
     {
-        return _reusableSql.UpsertUser<User>(user);
+        try
+        {
+            return _reusableSql.UpsertUser(user);
+        }
+        catch (Exception)
+        {
+            return StatusCode(400, "User with email already exists.");
+        }
     }
 
     // Delete user given userId

@@ -31,7 +31,7 @@ public class AuthController : ControllerBase
 
     [AllowAnonymous]
     [HttpPost("Register")]
-    public IActionResult Register(UserForRegistrationDto userForRegistration)
+    public ActionResult<User> Register(UserForRegistrationDto userForRegistration)
     {
         // Check is given passwords match
         if(userForRegistration.Password == userForRegistration.PasswordConfirm)
@@ -59,15 +59,22 @@ public class AuthController : ControllerBase
                         LastName = userForRegistration.LastName
                     };
                     // Create row in user table
-                    _reusableSql.UpsertUser<User>(user);
+                    try 
+                    {
+                        _reusableSql.UpsertUser(user);
+                    }
+                    catch (Exception)
+                    {
+                        return StatusCode(400, "Failed to register user");
+                    }
                     
                     // Retrieve new UserId
-                    string sqlUserId = "SELECT UserId FROM VideoFlashcardsSchema.Users WHERE Email = '" + userForRegistration.Email + "'";
-                    int userId = _dapper.LoadDataSingle<int>(sqlUserId);
+                    string sqlUserId = "SELECT * FROM VideoFlashcardsSchema.Users WHERE Email = '" + userForRegistration.Email + "'";
+                    User registeredUser = _dapper.LoadDataSingle<User>(sqlUserId);
 
                     // Set cookie "token"=JWT
-                    Response.Cookies.Append("token", _authHelper.CreateToken(userId), new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
-                    return Ok();
+                    Response.Cookies.Append("token", _authHelper.CreateToken(registeredUser.UserId), new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
+                    return registeredUser;
                 }
                 return StatusCode(400, "Failed to register user");
             }
