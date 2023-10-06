@@ -27,13 +27,14 @@ stages:
               includePreviewVersions: true
 
           - task: DotNetCoreCLI@2
-            displayName: Build
+            displayName: Build Website
             inputs:
               command: build
               projects: '**/*.csproj'
               arguments: '--configuration $(buildConfiguration)'
           
           - task: DotNetCoreCLI@2
+            displayName: Create Artifacts
             inputs:
               command: publish
               publishWebProjects: True
@@ -42,37 +43,34 @@ stages:
 
           # this code takes all the files in $(Build.ArtifactStagingDirectory) and uploads them as an artifact of your build.
           - task: PublishPipelineArtifact@1
+            displayName: Upload Artifacts
             inputs:
               targetPath: '$(Build.ArtifactStagingDirectory)' 
               artifactName: 'Server'
-    
-  - stage:
-    displayName: Run Integration Tests
-    jobs:
-      - job:
-        displayName: Integration Tests Job
-        steps:
-          - task: DotNetCoreCLI@2
-            inputs:
-              command: test
-              projects: '**/*Tests/*.csproj'
-              arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
-
-  - stage: 
-    displayName: Deploy Test
-    jobs: 
-      - job: 
-        displayName: Deploy Test Job
-        steps:
+          
           - task: AzureRmWebAppDeployment@4
+            displayName: Deploy Test Wesbite
             inputs:
               ConnectionType: 'AzureRM'
               azureSubscription: 'my_azure_subscription'
               appType: 'webApp'
               WebAppName: 'mf-videoflashcards-test'
               packageForLinux: '$(Build.ArtifactStagingDirectory)/*.zip'
-          
+    
+  - stage:
+    displayName: Run Test
+    jobs:
+      - job:
+        displayName: Tests Job
+        steps:
+          - task: DotNetCoreCLI@2
+            displayName: Integration Tests
+            inputs:
+              command: test
+              projects: '**/*Tests/*.csproj'
+              arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
+         
           - task: CmdLine@2
-            displayName: Curl Website
+            displayName: Deployment Tests
             inputs:
               script: 'curl https://mf-videoflashcards-test.azurewebsites.net/Users/test | findstr "200 OK"'
