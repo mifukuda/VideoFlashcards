@@ -17,7 +17,7 @@ stages:
     displayName: Build .NET application
     jobs:
       - job:
-        displayName: build job
+        displayName: Build Job
         steps:
           - task: UseDotNet@2
             displayName: 'Install .NET Core SDK'
@@ -45,20 +45,12 @@ stages:
             inputs:
               targetPath: '$(Build.ArtifactStagingDirectory)' 
               artifactName: 'Server'
-          
-          - task: AzureRmWebAppDeployment@4
-            inputs:
-              ConnectionType: 'AzureRM'
-              azureSubscription: 'my_azure_subscription'
-              appType: 'webApp'
-              WebAppName: 'mf-videoflashcards-test'
-              packageForLinux: '$(Build.ArtifactStagingDirectory)/*.zip'
     
   - stage:
     displayName: Run Integration Tests
     jobs:
       - job:
-        displayName: integration tests job
+        displayName: Integration Tests Job
         steps:
           - task: DotNetCoreCLI@2
             inputs:
@@ -66,3 +58,21 @@ stages:
               projects: '**/*Tests/*.csproj'
               arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
 
+  - stage: 
+    displayName: Deploy Test
+    jobs: 
+      - job: 
+        displayName: Deploy Test Job
+        steps:
+          - task: AzureRmWebAppDeployment@4
+            inputs:
+              ConnectionType: 'AzureRM'
+              azureSubscription: 'my_azure_subscription'
+              appType: 'webApp'
+              WebAppName: 'mf-videoflashcards-test'
+              packageForLinux: '$(Build.ArtifactStagingDirectory)/*.zip'
+          
+          - task: CmdLine@2
+            displayName: Curl Website
+            inputs:
+              script: 'curl https://mf-videoflashcards-test.azurewebsites.net/Users/test | findstr "200 OK"'
